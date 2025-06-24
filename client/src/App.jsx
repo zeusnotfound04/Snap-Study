@@ -34,7 +34,7 @@ function App() {
 
   const sendTextToBackend = async (text) => {
     try {
-      const response = await axios.post('http://localhost:3001/process-text', { text });
+       const response = await axios.post(`${process.env.BASE_URL}/process-text`, { text });
       setSummary(response.data.summary);
     } catch (error) {
       console.error('Error sending text to backend:', error);
