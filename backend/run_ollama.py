@@ -1,8 +1,7 @@
 import sys
-from ollama import generate  # Importing the generate function from Ollama
+from ollama import generate 
 
 def summarize_text(input_text):
-    # generate fuction use karke sumaarize karne ka code
     
     response = generate(model="llama2-uncensored:latest", prompt=f"Summarize the following text: {input_text}")
     
