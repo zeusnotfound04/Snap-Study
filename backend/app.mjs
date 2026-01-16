@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { spawn } from 'child_process'; // python file run karne ke liye
-
+import { spawn } from 'child_process';
 const app = express();
 
 
@@ -9,10 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {    
-    res.send('Hello Sherrr!');
+    res.send('Home page');
 });
-
-// Ollama ka route hai ji
 app.post('/process-text', (req, res) => {
     const extractedText = req.body.text;
     console.log("Received text from frontend:", extractedText);
@@ -22,14 +19,12 @@ app.post('/process-text', (req, res) => {
 
     
     pythonProcess.stdin.write(extractedText);
-    pythonProcess.stdin.end();  // or input send nahi hoga 
+    pythonProcess.stdin.end(); 
 
-    //Whenever the Python script sends data back, the below callback function will be executed.
 
     pythonProcess.stdout.on('data', (data) => {
-        const ollamaResponse = data.toString(); //buffer form mein hai issliye string convert karra
-        console.log("Ollama Model Response:", ollamaResponse); // yeh log remove kanra hai production ke time pr 
-        // response ko frontend bhejte hueeeee(after lots of debug)!!!!
+        const ollamaResponse = data.toString(); 
+        console.log("Ollama Model Response:", ollamaResponse); 
         res.json({ summary: ollamaResponse });
     });
 
@@ -39,7 +34,6 @@ app.post('/process-text', (req, res) => {
         res.status(500).json({ error: 'Error processing text with Ollama model' });
     });
 
-    //jab python proess execute hoga tab yeh callback function exceute hoga
     
     pythonProcess.on('close', (code) => {
         console.log(`Python process exited with code ${code}`);
